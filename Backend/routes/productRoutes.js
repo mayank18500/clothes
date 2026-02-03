@@ -23,8 +23,16 @@ router.get('/', async (req, res) => {
 // Get single product
 router.get('/:id', async (req, res) => {
     try {
-        const product = await Product.findById(req.params.id);
-        if (!product) return res.status(404).json({ message: 'Product not found' });
+        const product = await Product.findOne({ id: req.params.id });
+        if (!product) {
+            // Optional: fallback for _id if the id passed is a valid ObjectId
+            // const isValidObjectId = mongoose.Types.ObjectId.isValid(req.params.id);
+            // if (isValidObjectId) {
+            //     const productById = await Product.findById(req.params.id);
+            //     if (productById) return res.json(productById);
+            // }
+            return res.status(404).json({ message: 'Product not found' });
+        }
         res.json(product);
     } catch (err) {
         res.status(500).json({ message: err.message });
