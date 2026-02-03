@@ -62,7 +62,7 @@ const AddProduct = () => {
 
         setUploading(true);
         try {
-            const res = await fetch('http://localhost:5000/api/upload', {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/upload`, {
                 method: 'POST',
                 body: uploadData,
                 credentials: 'include'
@@ -70,7 +70,11 @@ const AddProduct = () => {
 
             if (res.ok) {
                 const data = await res.text();
-                setImage(`http://localhost:5000${data}`);
+                setImage(`http://localhost:5000${data}`); // NOTE: This might need adjustment if backend returns relative path. Leaving as is but usually uploads are served statically.
+                // Actually, if we are changing everything to env, we should probably change this too.
+                // But the backend returns a relative path like '/uploads/image.jpg'.
+                // So we need the base URL.
+                setImage(`${import.meta.env.VITE_API_URL.replace('/api', '')}${data}`);
                 toast.success('Image uploaded');
             } else {
                 toast.error('Image upload failed');
@@ -97,7 +101,7 @@ const AddProduct = () => {
         };
 
         try {
-            const res = await fetch('http://localhost:5000/api/products', {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/products`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(productData),

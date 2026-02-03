@@ -27,7 +27,7 @@ const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
 
           {/* Badges */}
           <div className="absolute top-3 left-3 flex flex-col gap-2 z-10">
-            {product.isNew && (
+            {product.isNewArrival && (
               <span className="px-3 py-1 text-xs font-medium tracking-wider uppercase bg-primary text-primary-foreground rounded-sm">
                 New
               </span>

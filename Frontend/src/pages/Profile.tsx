@@ -31,7 +31,7 @@ const Profile = () => {
         e.preventDefault();
         setIsSaving(true);
         try {
-            const res = await fetch("http://localhost:5000/api/auth/me", {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/auth/me`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ name, phone, address }),

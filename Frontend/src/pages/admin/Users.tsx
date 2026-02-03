@@ -26,7 +26,7 @@ const AdminUsers = () => {
 
     const fetchUsers = async () => {
         try {
-            const res = await fetch('http://localhost:5000/api/users', {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/users`, {
                 credentials: 'include'
             });
             const data = await res.json();
@@ -48,7 +48,7 @@ const AdminUsers = () => {
         if (!confirm('Are you sure you want to delete this user?')) return;
 
         try {
-            const res = await fetch(`http://localhost:5000/api/users/${id}`, {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/users/${id}`, {
                 method: 'DELETE',
                 credentials: 'include'
             });

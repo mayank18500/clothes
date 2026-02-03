@@ -27,7 +27,7 @@ const AdminProducts = () => {
 
     const fetchProducts = async () => {
         try {
-            const res = await fetch('http://localhost:5000/api/products');
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/products`);
             const data = await res.json();
             if (res.ok) {
                 setProducts(data);
@@ -47,7 +47,7 @@ const AdminProducts = () => {
         if (!confirm('Are you sure you want to delete this product?')) return;
 
         try {
-            const res = await fetch(`http://localhost:5000/api/products/${id}`, {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/products/${id}`, {
                 method: 'DELETE',
                 credentials: 'include'
             });

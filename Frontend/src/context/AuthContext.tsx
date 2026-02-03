@@ -45,7 +45,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             }
 
             try {
-                const res = await fetch("http://localhost:5000/api/auth/me", {
+                const res = await fetch(`${import.meta.env.VITE_API_URL}/auth/me`, {
                     headers: {
                         'Authorization': `Bearer ${currentToken}`
                     }

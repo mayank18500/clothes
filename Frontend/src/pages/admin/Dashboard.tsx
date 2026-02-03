@@ -21,7 +21,7 @@ const AdminDashboard = () => {
     useEffect(() => {
         const fetchStats = async () => {
             try {
-                const res = await fetch('http://localhost:5000/api/dashboard', {
+                const res = await fetch(`${import.meta.env.VITE_API_URL}/dashboard`, {
                     credentials: 'include'
                 });
                 const data = await res.json();

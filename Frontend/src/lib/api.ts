@@ -1,6 +1,6 @@
 import { Product } from '@/data/products';
 
-const API_URL = '/api';
+const API_URL = import.meta.env.VITE_API_URL || '/api';
 
 export const fetchProducts = async (params?: string): Promise<Product[]> => {
     const query = params ? `?${params}` : '';
