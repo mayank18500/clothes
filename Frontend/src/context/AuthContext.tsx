@@ -12,7 +12,7 @@ export interface User {
 interface AuthContextType {
     user: User | null;
     loading: boolean;
-    login: (userData: User) => void;
+    login: (userData: User & { token?: string }) => void;
     logout: () => void;
     updateUser: (userData: User) => void;
 }
@@ -26,17 +26,39 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     // Check if user is logged in
     useEffect(() => {
         const checkUser = async () => {
+            const token = localStorage.getItem('token');
+            // Helper to check URL query param for token (OAuth redirect)
+            const urlParams = new URLSearchParams(window.location.search);
+            const urlToken = urlParams.get('token');
+
+            if (urlToken) {
+                localStorage.setItem('token', urlToken);
+                // Clean URL
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+
+            const currentToken = urlToken || token;
+
+            if (!currentToken) {
+                setLoading(false);
+                return;
+            }
+
             try {
                 const res = await fetch("http://localhost:5000/api/auth/me", {
-                    credentials: "include"
+                    headers: {
+                        'Authorization': `Bearer ${currentToken}`
+                    }
                 });
                 if (res.ok) {
                     const data = await res.json();
                     setUser(data);
                 } else {
+                    localStorage.removeItem('token');
                     setUser(null);
                 }
             } catch (error) {
+                localStorage.removeItem('token');
                 setUser(null);
             } finally {
                 setLoading(false);
@@ -45,13 +67,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         checkUser();
     }, []);
 
-    const login = (userData: User) => {
+    const login = (userData: User & { token?: string }) => {
+        if (userData.token) {
+            localStorage.setItem('token', userData.token);
+        }
         setUser(userData);
     };
 
     const logout = async () => {
         try {
-            await fetch("http://localhost:5000/api/auth/logout", { method: "POST" });
+            // Optional: Call backend to clear cookie if used, but largely relying on client token removal
+            localStorage.removeItem('token');
             setUser(null);
         } catch (err) {
             console.error("Logout failed", err);

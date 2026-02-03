@@ -128,7 +128,8 @@ const ProductListing = () => {
     }
 
     return result;
-  }, [selectedCategories, selectedSizes, selectedColors, priceRange, sortBy, filterParam]);
+  }, [selectedCategories, selectedSizes, selectedColors, priceRange, sortBy, filterParam, products]);
+
 
   console.log('API Products:', products);
   console.log('Filtered Products:', filteredProducts);

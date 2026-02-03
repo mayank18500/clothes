@@ -156,6 +156,7 @@ router.post('/verify-email', async (req, res) => {
             name: newUser.name,
             email: newUser.email,
             role: newUser.role,
+            token: authToken,
         });
 
     } catch (err) {
@@ -182,11 +183,13 @@ router.post('/login', async (req, res) => {
                 name: user.name,
                 email: user.email,
                 role: user.role,
+                token: token,
             });
         } else {
             res.status(401).json({ message: 'Invalid email or password' });
         }
     } catch (err) {
+        console.error("Login Error:", err);
         res.status(500).json({ message: err.message });
     }
 });
@@ -207,7 +210,8 @@ router.get('/google/callback',
         });
 
         // Redirect to frontend
-        res.redirect(process.env.FRONTEND_URL || 'http://localhost:5173');
+        res.redirect(`${process.env.FRONTEND_URL || 'http://localhost:5173'}?token=${token}`);
+
     }
 );
 

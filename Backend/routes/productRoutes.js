@@ -23,7 +23,7 @@ router.get('/', async (req, res) => {
 // Get single product
 router.get('/:id', async (req, res) => {
     try {
-        const product = await Product.findOne({ id: req.params.id });
+        const product = await Product.findById(req.params.id);
         if (!product) return res.status(404).json({ message: 'Product not found' });
         res.json(product);
     } catch (err) {
@@ -44,7 +44,7 @@ router.post('/', protect, admin, async (req, res) => {
 // Update Product (Admin)
 router.patch('/:id', protect, admin, async (req, res) => {
     try {
-        const product = await Product.findOneAndUpdate({ id: req.params.id }, req.body, { new: true });
+        const product = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true });
         if (!product) return res.status(404).json({ message: 'Product not found' });
         res.json(product);
     } catch (err) {
@@ -55,7 +55,7 @@ router.patch('/:id', protect, admin, async (req, res) => {
 // Delete Product (Admin)
 router.delete('/:id', protect, admin, async (req, res) => {
     try {
-        const product = await Product.findOneAndDelete({ id: req.params.id });
+        const product = await Product.findByIdAndDelete(req.params.id);
         if (!product) return res.status(404).json({ message: 'Product not found' });
         res.json({ message: 'Product removed' });
     } catch (err) {
